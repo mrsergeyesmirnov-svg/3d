@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#f8f9fb">
+  <meta name="description" content="FORMA — вещи, созданные для тебя. Идея, дизайн, 3D-печать.">
+  <title>FORMA — Представь что угодно. Мы создадим.</title>
+  <link rel="icon" type="image/svg+xml" href="./app/icon.svg">
+  <link rel="stylesheet" href="./app/globals.css">
+  <link rel="stylesheet" href="./pages-static.css">
+  <script defer src="./pages-static.js"></script>
+</head>
+<body>
+<div class="site">
+  <div class="ambient ambient-one"></div><div class="ambient ambient-two"></div><div class="ambient ambient-three"></div>
+  <header class="header">
+    <button class="brand" type="button" data-view="home" aria-label="FORMA — на главную">
+      <span class="brand-mark">f<span class="brand-dot">.</span></span>
+      <span class="brand-word">forma<span>.</span></span>
+      <span class="brand-divider"></span>
+      <span class="brand-caption">imagination made real</span>
+    </button>
+    <div class="header-right">
+      <span class="header-label">3D DESIGN STUDIO <span class="header-star">✳</span> 2026</span>
+      <button id="menu-toggle" type="button" class="menu-button" aria-label="Открыть меню" aria-expanded="false">
+        <span class="menu-button-label">Меню</span><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+    </div>
+  </header>
+  <main class="main">
+    <section class="home page-panel" id="home-panel">
+      <div class="hero-copy reveal">
+        <span class="eyebrow"><span class="tiny-light"></span> МЫСЛЬ → ОБЪЕКТ</span>
+        <h1>Представь что угодно.<br><span>Мы создадим.</span></h1>
+        <p>Твоя идея, наш AI и технологии 3D-печати.<br class="desktop-break"> Вещи, которых больше ни у кого нет.</p>
+      </div>
+      <section class="chat-window reveal" aria-label="Чат с дизайнером FORMA">
+        <div class="chat-topbar">
+          <div class="assistant-identity">
+            <div class="ai-avatar"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="m12 2 2.7 7.3L22 12l-7.3 2.7L12 22l-2.7-7.3L2 12l7.3-2.7z"/></svg></div>
+            <div><strong>FORMA AI</strong><span>Твой персональный дизайнер</span></div>
+          </div>
+          <div class="ai-state is-demo"><i></i> Демо-режим</div>
+        </div>
+        <div class="chat-stream" id="chat-stream" aria-live="polite">
+          <div class="chat-timestamp">НОВЫЙ ДИАЛОГ</div>
+          <div class="message-row message-assistant"><div class="message-avatar">✳</div><div class="message-bubble">Привет! Я FORMA — твой помощник в создании вещей. Расскажи, что хочешь придумать: необычный чехол, предмет для дома или что-то совсем своё?</div></div>
+        </div>
+        <div class="chat-composer-wrap">
+          <div class="prompts" id="prompts">
+            <button type="button" class="prompt" data-prompt="Хочу необычный дизайнерский чехол для телефона. Помоги выбрать."><span>✳</span> Дизайнерский чехол ↗</button>
+            <button type="button" class="prompt" data-prompt="Хочу создать красивый предмет для дома. Какие есть идеи?"><span>◌</span> Вещь для дома ↗</button>
+            <button type="button" class="prompt" data-prompt="У меня своя идея изделия. Помоги превратить её в заказ."><span>↗</span> Своя идея ↗</button>
+          </div>
+          <form id="chat-form" class="chat-composer">
+            <textarea id="chat-input" rows="1" maxlength="3000" placeholder="Опиши вещь, которую хочешь создать..." aria-label="Сообщение" required></textarea>
+            <button class="send-button" aria-label="Отправить" type="submit"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg></button>
+          </form>
+          <div class="chat-bottom">
+            <span>◇ Не отправляй личные данные в чат</span>
+            <button id="order-open" type="button">▣ Оформить запрос <span aria-hidden="true">→</span></button>
+          </div>
+        </div>
+      </section>
+      <div class="hero-foot reveal">
+        <div><span class="foot-symbol">↗</span><span>От идеи до реальной вещи</span></div>
+        <div><span class="foot-symbol">✳</span><span>Дизайн под тебя</span></div>
+        <button type="button" data-view="catalog">Смотреть каталог <span aria-hidden="true">↗</span></button>
+      </div>
+      <section class="teaser">
+        <div class="section-titlebar"><span class="overline">01 / ИЗ КАТАЛОГА</span><button type="button" data-view="catalog">Все товары ↗</button></div>
+        <h2>Начни с формы.<br><em>Продолжи фантазией.</em></h2>
+        <div id="featured-grid" class="product-grid featured-grid"></div>
+      </section>
+    </section>
+    <section class="collection-page page-panel" id="catalog-panel" hidden>
+      <span class="page-eyebrow">МАГАЗИН / КОЛЛЕКЦИЯ 001</span>
+      <div class="collection-heading"><div><h1>Обычные вещи.<br><span>Необычный взгляд.</span></h1><p>Дизайнерские объекты, которые можно сделать своими.</p></div><span class="collection-count">09 ОБЪЕКТОВ</span></div>
+      <div class="category-filters" id="category-filters" role="group" aria-label="Категории"></div>
+      <div class="product-grid" id="catalog-grid"></div>
+      <div class="catalog-footer">
+        <div class="footer-spark">✳</div>
+        <div><h3>Нет нужной вещи?</h3><p>Расскажи о своей идее — создадим проект вместе.</p></div>
+        <button type="button" class="dark-action" data-view="home">Обсудить с AI ↗</button>
+      </div>
+    </section>
+    <section class="editorial-page page-panel" id="how-panel" hidden>
+      <span class="page-eyebrow">ПРОЦЕСС / 03 ШАГА</span>
+      <h1>От мысли<br>до предмета<span class="editorial-dot">.</span></h1>
+      <p class="editorial-intro">Никаких сложных редакторов. Просто диалог, понятный проект и реальное производство.</p>
+      <div class="steps">
+        <div class="step"><span>01</span><div><h3>Расскажи идею</h3><p>Объясни, что хочешь создать, или выбери готовый предмет в каталоге.</p></div><b>✳</b></div>
+        <div class="step"><span>02</span><div><h3>Согласуй детали</h3><p>Выбираем материал, размер и цвет. Специалист подтверждает итоговую стоимость.</p></div><b>◇</b></div>
+        <div class="step"><span>03</span><div><h3>Получи свою вещь</h3><p>После запуска сервиса заказ можно будет получить доставкой или самовывозом.</p></div><b>↗</b></div>
+      </div>
+      <button class="dark-action" type="button" data-view="home">Придумать что-нибудь ↗</button>
+    </section>
+    <section class="editorial-page page-panel" id="about-panel" hidden>
+      <span class="page-eyebrow">О НАС / FORMA STUDIO</span>
+      <h1>Форму<br>задаёшь ты<span class="editorial-dot">.</span></h1>
+      <p class="editorial-intro">FORMA — проект студии предметного дизайна и 3D-производства. Мы хотим сделать создание уникальных вещей таким же простым, как переписка с другом.</p>
+      <div class="values-grid">
+        <div><span class="value-symbol">✳</span><h3>Индивидуальность</h3><p>Не ограничиваем тебя цветом из каталога. Помогаем придумать вещь под твои задачи.</p></div>
+        <div><span class="value-symbol">◇</span><h3>Новые технологии</h3><p>Параметрические модели, гибкие материалы и профессиональная проверка проектов.</p></div>
+        <div><span class="value-symbol">↗</span><h3>Без лишних обещаний</h3><p>Подтверждаем возможность изготовления, стоимость и срок до запуска печати.</p></div>
+      </div>
+      <div class="about-banner"><span>THE FUTURE IS PERSONAL</span><strong>Made for you.</strong><button type="button" data-view="home">Создать свою вещь ↗</button></div>
+    </section>
+    <section class="editorial-page page-panel" id="locations-panel" hidden>
+      <span class="page-eyebrow">ЛОКАЦИИ / ДОСТАВКА</span>
+      <h1>Создавай здесь.<br>Забирай где удобно<span class="editorial-dot">.</span></h1>
+      <p class="editorial-intro">Готовим будущие партнёрские точки выдачи и доставку. Конкретные адреса появятся после запуска — неподтверждённые точки не указываем.</p>
+      <div class="location-panel"><div class="location-illustration"><span>FORMA.</span><div class="location-circle"></div><div class="location-ring"></div></div><div><span class="overline">СКОРО</span><h3>Санкт-Петербург</h3><p>Планируем первые точки выдачи и партнёрства с копицентрами.</p><div class="location-status"><span></span> Площадки подбираются</div></div></div>
+      <button type="button" data-view="home" class="dark-action">Вернуться к AI ↗</button>
+    </section>
+  </main>
+  <footer class="footer">
+    <div><span class="footer-logo">forma.</span><span>Things, made personal.</span></div>
+    <div><span>© 2026 FORMA — демонстрационная версия</span><a href="#privacy" data-view="privacy">Персональные данные</a></div>
+  </footer>
+  <div class="menu-overlay" id="menu-overlay" hidden>
+    <button type="button" class="menu-backdrop" id="menu-backdrop" aria-label="Закрыть меню"></button>
+    <aside class="menu-drawer" role="dialog" aria-modal="true" aria-label="Меню">
+      <div class="drawer-caption">НАВИГАЦИЯ <span>FORMA / 2026</span><button class="drawer-close" type="button" id="menu-close" aria-label="Закрыть меню">✕</button></div>
+      <nav id="drawer-nav">
+        <button type="button" data-view="home"><span class="drawer-num">01</span><span>Главная</span><span>↗</span></button>
+        <button type="button" data-view="catalog"><span class="drawer-num">02</span><span>Каталог</span><span>↗</span></button>
+        <button type="button" data-view="how"><span class="drawer-num">03</span><span>Как это работает</span><span>↗</span></button>
+        <button type="button" data-view="about"><span class="drawer-num">04</span><span>О нас</span><span>↗</span></button>
+        <button type="button" data-view="locations"><span class="drawer-num">05</span><span>Адреса и доставка</span><span>↗</span></button>
+      </nav>
+      <div class="drawer-bottom"><span>Есть идея, которой нет в каталоге?</span><button type="button" data-view="home">Спроси у FORMA AI ↗</button></div>
+    </aside>
+  </div>
+  <div class="modal-overlay" id="modal-overlay" hidden>
+    <article class="product-modal" role="dialog" aria-modal="true" aria-label="Детали товара">
+      <button class="modal-close" id="product-close" type="button" aria-label="Закрыть">✕</button>
+      <div class="modal-art" id="modal-art"></div>
+      <div class="modal-info">
+        <div class="overline" id="product-category"></div>
+        <h2 id="product-name"></h2>
+        <p class="modal-subtitle" id="product-subtitle"></p>
+        <p class="modal-description" id="product-description"></p>
+        <div class="spec-row"><span>Материал</span><strong id="product-material"></strong></div>
+        <div class="spec-row"><span>Изготовление</span><strong id="product-time"></strong></div>
+        <div class="spec-row"><span>Цвета</span><strong id="product-colors"></strong></div>
+        <div class="modal-bottom"><div><span>Предварительная цена</span><strong id="product-price"></strong></div><button type="button" class="dark-action" id="product-order">Обсудить заказ ↗</button></div>
+        <p class="modal-disclaimer">Визуализации — концепты. Стоимость и вид изделия согласуются до производства.</p>
+      </div>
+    </article>
+  </div>
+  <div class="modal-overlay" id="order-overlay" hidden>
+    <article class="demo-order" role="dialog" aria-modal="true" aria-label="Оформление заказа">
+      <button class="modal-close" id="order-close" type="button" aria-label="Закрыть">✕</button>
+      <span class="page-eyebrow">НОВЫЙ ЗАПРОС</span>
+      <h2>Твоя вещь.<br>Твой проект.</h2>
+      <p>Мы подготовили интерфейс согласования заказа. Временно заявки не принимаются: GitHub Pages не поддерживает защищённое хранение адресов и телефонов.</p>
+      <label for="demo-product">Выбранное изделие</label>
+      <select id="demo-product"></select>
+      <div class="order-price"><span>Ориентировочно от</span><strong id="demo-price">—</strong></div>
+      <div class="demo-notice">Для реального оформления подключим сервер Yandex AI, российскую базу данных и безопасную оплату. Не указывай контакты в чате.</div>
+      <button type="button" class="dark-action" id="order-back">Вернуться к чату ↗</button>
+    </article>
+  </div>
+</div>
+</body>
+</html>
