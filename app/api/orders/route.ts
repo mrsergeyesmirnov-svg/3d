@@ -19,7 +19,7 @@ function getPool() {
 }
 
 export async function POST(req: NextRequest) {
-  if (!process.env.DATABASE_URL || !process.env.COMPANY_NAME || !process.env.PRIVACY_POLICY_URL) {
+  if (!process.env.DATABASE_URL || !process.env.COMPANY_NAME || !process.env.PRIVACY_POLICY_URL || !process.env.SITE_URL) {
     return NextResponse.json({ error: 'Приём заявок пока не подключён. Сайт работает в режиме презентации.' }, { status: 503 });
   }
   // Prevent direct cross-site browser form submissions.
