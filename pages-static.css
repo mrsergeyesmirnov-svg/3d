@@ -1,0 +1,38 @@
+/* GitHub Pages static preview: reuse the production Next.js design tokens and styles. */
+[hidden] { display:none !important; }
+body.overlay-active { overflow:hidden; }
+.product-card .product-image { display:block;width:100%; }
+.product-card .product-content { width:100%; }
+.product-card .product-content>span { display:block;min-width:0; }
+.product-card .product-content small { display:block;color:#a5aab4;font-size:10px;letter-spacing:.02em; }
+.product-card .product-content strong { color:#30343b; }
+.art-stage .art-drawing { max-width:100%; }
+.art-stage .art-orbit { pointer-events:none; }
+.card-arrow { font-size:20px; color:#4a515e; }
+.footer-spark { font-size:26px; color:#747d8a; }
+.value-symbol { color:#858e9c; font-size:25px; }
+.step>b { color:#9098a4;font-size:26px;font-weight:300; }
+.menu-drawer .drawer-caption { display:flex;align-items:center; }
+.menu-drawer .drawer-caption>span { margin-left:auto;margin-right:19px; }
+.drawer-close { width:34px;height:34px;display:grid;place-items:center;border:1px solid #e6e9ee;background:#ffffffc9;border-radius:50%;color:#515864;font-size:15px;letter-spacing:0;box-shadow:0 3px 9px #9ca4b527; }
+.drawer-close:hover { background:#fff;transform:rotate(90deg);transition:transform .18s; }
+.menu-drawer nav button>span:last-child { font-size:22px;font-weight:300; }
+.modal-close { font-size:18px;font-weight:300; }
+.demo-order { position:relative;width:min(500px,100%);max-height:calc(100vh - 30px);overflow-y:auto;border:1px solid white;border-radius:28px;background:linear-gradient(155deg,#fffffffa,#f6f8fbfa);box-shadow:0 30px 100px #1e253e46;padding:43px;animation:popIn .25s ease; }
+.demo-order h2 { font-size:clamp(33px,4vw,48px);line-height:1.1;font-weight:600;letter-spacing:-.067em;margin:21px 0; }
+.demo-order p { color:#858d9a;font-size:13px;line-height:1.8;margin:0 0 28px; }
+.demo-order label { font-size:11px;font-weight:650;color:#666e7b;display:block;margin-bottom:8px; }
+.demo-order select { display:block;width:100%;min-height:48px;padding:0 14px;border:1px solid #e1e5ec;border-radius:12px;background:#fff;font-size:13px;color:#303641;outline:none; }
+.demo-order .order-price { margin-top:19px;margin-bottom:20px; }
+.demo-notice { border-radius:13px;background:#f0f2f6;border:1px solid #e6eaf0;padding:16px;margin:0 0 22px;color:#717985;font-size:12px;line-height:1.75; }
+.demo-order .dark-action { width:100%; }
+#privacy-panel { padding-bottom:130px; }
+#privacy-panel .editorial-intro { max-width:840px; }
+@media (max-width:650px) {
+  .demo-order { padding:34px 22px;border-radius:22px; }
+  .product-card .product-content small { font-size:10px; }
+  .product-card .product-content strong { margin-top:5px;font-size:12px; }
+  .footer-spark { display:none; }
+  .menu-drawer .drawer-caption { gap:8px; }
+  .menu-drawer .drawer-caption>span { margin-right:4px; }
+}
