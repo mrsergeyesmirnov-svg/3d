@@ -141,6 +141,7 @@ export default function Storefront() {
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || 'Ошибка оформления');
       setOrderSuccess(data.id);
+      setOrderOpen(false);
       setMessages(prev => [...prev, {
         role: 'assistant',
         content: 'Заявка № ' + data.id.slice(0, 8).toUpperCase() +
@@ -304,7 +305,7 @@ export default function Storefront() {
       {menu && <div className="menu-overlay">
         <button className="menu-backdrop" aria-label="Закрыть меню" onClick={() => setMenu(false)}/>
         <aside className="menu-drawer" aria-label="Навигация">
-          <div className="drawer-caption">НАВИГАЦИЯ <span>FORMA / 2026</span></div>
+          <div className="drawer-caption">НАВИГАЦИЯ <span>FORMA / 2026</span><button className="drawer-close" onClick={() => setMenu(false)} aria-label="Закрыть меню"><X size={19}/></button></div>
           <nav>{nav.map(item => <button key={item.view} onClick={() => changeView(item.view)} className={view === item.view ? 'current' : ''}><span className="drawer-num">{item.num}</span><span>{item.label}</span><ArrowUpRight size={22} strokeWidth={1.4}/></button>)}</nav>
           <div className="drawer-bottom"><span>Есть идея, которой нет в каталоге?</span><button onClick={() => changeView('home')}>Спроси у FORMA AI <ArrowUpRight size={16}/></button></div>
         </aside>
