@@ -9,17 +9,18 @@ import {
 import ProductArt from '@/components/ProductArt';
 import { LiquidButton } from '@/components/ui/liquid-glass-button';
 import { productById, products, rub, type Product } from '@/lib/catalog';
+import { designTiers, getDesignQuote, type DesignTier } from '@/lib/design-pricing';
 
 type View = 'home' | 'catalog' | 'how' | 'about' | 'locations';
 type Msg = { role: 'assistant' | 'user'; content: string };
 type FormData = {
-  productId: string; preferences: string; name: string; phone: string;
+  productId: string; designTier: DesignTier; preferences: string; name: string; phone: string;
   delivery: 'courier' | 'pickup'; address: string; consent: boolean;
 };
 
 const initial: Msg[] = [{
   role: 'assistant',
-  content: 'Привет! Я FORMA — твой AI-помощник в создании вещей. Расскажи, что хочешь придумать: необычный чехол, предмет для дома или что-то совсем своё?'
+  content: 'Привет! Я FORMA — твой AI-помощник в создании вещей. Обсуждение идеи бесплатно. Если потребуется новая 3D-модель, её разработку рассчитаем отдельно от печати. Что хочешь создать?'
 }];
 const prompts = [
   { emoji: '✳', label: 'Дизайнерский чехол', prompt: 'Хочу необычный дизайнерский чехол для телефона. Помоги выбрать форму и материал.' },
@@ -35,7 +36,7 @@ const nav: { label: string; view: View; num: string }[] = [
 ];
 const filters = ['Все', 'Аксессуары', 'Для дома', 'Lifestyle', 'Для бизнеса', 'Концепты'];
 const blankOrder: FormData = {
-  productId: 'flow-case', preferences: '', name: '', phone: '',
+  productId: 'flow-case', designTier: 'standard', preferences: '', name: '', phone: '',
   delivery: 'courier', address: '', consent: false
 };
 
@@ -114,7 +115,7 @@ export default function Storefront() {
   };
 
   const openOrder = (product?: Product) => {
-    if (product) setOrder(prev => ({ ...prev, productId: product.id }));
+    if (product) setOrder(prev => ({ ...prev, productId: product.id, designTier: product.id === 'studio-proto' ? 'custom' : 'standard' }));
     setOrderError(''); setOrderSuccess('');
     setOrderOpen(true); setView('home'); setPicked(null); setMenu(false);
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -146,7 +147,7 @@ export default function Storefront() {
       setMessages(prev => [...prev, {
         role: 'assistant',
         content: 'Заявка № ' + data.id.slice(0, 8).toUpperCase() +
-          ' принята. Мы проверим параметры, свяжемся с тобой и согласуем финальную цену до производства.'
+          ' принята. Стоимость разработки и печати согласуем по отдельности. Оплата сейчас не списана.'
       }]);
       setOrder(prev => ({ ...blankOrder, productId: prev.productId }));
     } catch (err) {
@@ -154,7 +155,11 @@ export default function Storefront() {
     } finally { setOrderBusy(false); }
   };
 
-  const orderProduct = productById(order.productId) || products[0];
+  const orderQuote = getDesignQuote(order.productId, order.designTier);
+  const startCustomProject = () => {
+    openOrder();
+    setOrder(prev => ({ ...prev, productId: 'new-project', designTier: 'custom' }));
+  };
   const filtered = filter === 'Все' ? products : products.filter(p => p.category === filter);
 
   return (
@@ -211,9 +216,23 @@ export default function Storefront() {
                 <button onClick={() => setOrderOpen(false)} className="icon-button" aria-label="Закрыть форму"><X size={18}/></button>
               </div>
               <form onSubmit={submitOrder} className="order-form">
-                <label>Что создаём?<select value={order.productId} onChange={e => changeOrder('productId',e.target.value)}>
-                  {products.filter(p => p.orderable).map(p => <option key={p.id} value={p.id}>{p.name} — от {rub(p.price)}</option>)}
+                <label>Что создаём?<select value={order.productId} onChange={e => {
+                  const productId = e.target.value;
+                  setOrder(prev => ({ ...prev, productId, designTier: productId === 'new-project' || productId === 'studio-proto' ? 'custom' : 'standard' }));
+                }}>
+                  <option value="new-project">Моя новая вещь — по идее</option>
+                  {products.filter(p => p.orderable).map(p => <option key={p.id} value={p.id}>{p.name} — печать от {rub(p.price)}</option>)}
                 </select></label>
+                <div className="design-selector" role="group" aria-label="Тип разработки 3D-модели">
+                  <span className="overline">УСЛУГА РАЗРАБОТКИ</span>
+                  {designTiers.filter(t => !['new-project','studio-proto'].includes(order.productId) || t.id === 'custom' || t.id === 'complex').map(t =>
+                    <label key={t.id} className={'design-option' + (order.designTier === t.id ? ' is-selected' : '')}>
+                      <input type="radio" name="designTier" value={t.id} checked={order.designTier === t.id} onChange={() => changeOrder('designTier', t.id)}/>
+                      <span className="design-option-text"><strong>{t.title}</strong><small>{t.description}</small></span>
+                      <b>{t.label}</b>
+                    </label>
+                  )}
+                </div>
                 <label>Детали и пожелания<textarea rows={2} placeholder="Размер, цвет, стиль, надпись..." value={order.preferences} onChange={e => changeOrder('preferences',e.target.value)} maxLength={1000}/></label>
                 <div className="form-two">
                   <label>Как к тебе обращаться<input required value={order.name} onChange={e => changeOrder('name',e.target.value)} placeholder="Имя" minLength={2} maxLength={100}/></label>
@@ -223,14 +242,19 @@ export default function Storefront() {
                   <option value="courier">Доставка курьером</option><option value="pickup">Самовывоз (согласуем точку)</option>
                 </select></label>
                 {order.delivery === 'courier' && <label>Адрес доставки<input required minLength={8} maxLength={350} value={order.address} onChange={e => changeOrder('address',e.target.value)} placeholder="Город, улица, дом, квартира"/></label>}
-                <div className="order-price"><span>Предварительно, от</span><strong>{rub(orderProduct.price)}</strong></div>
+                <div className="order-breakdown">
+                  <div><span>Разработка 3D-модели</span><strong>{rub(orderQuote?.designFeeFrom ?? 0)}</strong></div>
+                  <div><span>Изготовление</span><strong>{orderQuote?.printingPriceFrom == null ? 'По расчёту' : 'от ' + rub(orderQuote.printingPriceFrom)}</strong></div>
+                  <div className="order-total"><span>{orderQuote?.totalFrom == null ? 'Подтверждаем после проверки' : 'Ориентир от'}</span><strong>{orderQuote?.totalFrom == null ? 'Индивидуально' : rub(orderQuote.totalFrom)}</strong></div>
+                  <p>Общение с AI бесплатно. Разработка оплачивается только после согласования ТЗ и стоимости; печать — отдельно, после проверки модели. Сейчас платёж не проводится.</p>
+                </div>
                 <label className="checkbox-label"><input type="checkbox" required checked={order.consent} onChange={e => changeOrder('consent',e.target.checked)}/><span>Согласен на обработку данных для оформления заявки. <a href={policyUrl} target="_blank" rel="noreferrer">Информация о данных</a></span></label>
                 {orderError && <div className="form-error" role="alert">{orderError}</div>}
                 {!ordersReady && <p className="form-note">Это предварительная демонстрация. Реальный приём заявок откроется после подключения базы и публикации документов.</p>}
                 <button type="submit" disabled={orderBusy || !ordersReady} className="primary-submit">
                   {orderBusy ? 'Отправляем...' : ordersReady ? 'Отправить заявку' : 'Приём заявок скоро'} <ArrowUpRight size={18}/>
                 </button>
-                <p className="form-fine">Цена и сроки подтверждаются человеком до начала изготовления. Оплата сейчас не списывается.</p>
+                <p className="form-fine">Заявка не является оплатой. После проверки ТЗ согласуем стоимость разработки, затем отдельно подтвердим печать. Ничего не списывается.</p>
               </form>
             </div>}
 
@@ -255,6 +279,20 @@ export default function Storefront() {
             <div><span className="foot-symbol">✳</span><span>Дизайн под тебя</span></div>
             <LiquidButton size="sm" className="hero-catalog-btn" onClick={() => changeView('catalog')}>Смотреть каталог <ArrowUpRight size={18}/></LiquidButton>
           </div>
+          <section className="design-pricing-section" aria-label="Стоимость разработки модели">
+            <div className="section-titlebar"><span className="overline">02 / FORMA CREATE</span><span className="pricing-kicker">РАЗРАБОТКА И ПЕЧАТЬ — ОТДЕЛЬНО</span></div>
+            <div className="design-pricing-heading">
+              <div><h2>Идея — бесплатно.<br/><em>Модель — по делу.</em></h2><p>Начни с разговора. Если захочешь превратить идею в готовую 3D-модель, согласуем цену разработки до начала работы.</p></div>
+              <LiquidButton size="lg" onClick={startCustomProject}>Создать свою вещь <ArrowUpRight size={17}/></LiquidButton>
+            </div>
+            <div className="design-pricing-grid">{designTiers.map((t, idx) => <article key={t.id} className={'design-tier' + (idx === 2 ? ' design-tier--featured' : '')}>
+              <span className="design-tier-number">0{idx+1} / ДИЗАЙН</span>
+              <h3>{t.title}</h3>
+              <p>{t.description}</p>
+              <strong>{t.label}</strong>
+            </article>)}</div>
+            <p className="design-pricing-note">Изготовление и доставка рассчитываются отдельно. В базовую разработку входит одна согласованная итерация правок. STL-файлы и права на коммерческое использование — по отдельному соглашению. Итоговую цену утверждает специалист.</p>
+          </section>
           <section className="teaser">
             <div className="section-titlebar"><span className="overline">01 / ИЗ КАТАЛОГА</span><button onClick={() => changeView('catalog')}>Все товары <ArrowUpRight size={16}/></button></div>
             <h2>Начни с формы.<br/><em>Продолжи фантазией.</em></h2>
@@ -275,7 +313,8 @@ export default function Storefront() {
         {view === 'how' && <section className="editorial-page page-enter">
           <span className="page-eyebrow">ПРОЦЕСС / 03 ШАГА</span>
           <h1>От мысли<br/>до предмета<span className="editorial-dot">.</span></h1>
-          <p className="editorial-intro">Никаких сложных редакторов. Просто диалог, понятный проект и реальное производство.</p>
+          <p className="editorial-intro">Никаких сложных редакторов. Обсуждение идеи бесплатно; индивидуальная разработка 3D-модели оплачивается отдельно от изготовления, после согласования стоимости.</p>
+          <div className="how-design-fees"><strong>Дизайн по твоей идее — от 1 490 ₽</strong><span>Простые правки от 490 ₽ · сложные проекты от 4 990 ₽ · печать отдельно</span><button type="button" onClick={startCustomProject}>Обсудить мой проект ↗</button></div>
           <div className="steps">{[
             ['01','Расскажи идею','Объясни AI, что хочешь создать, или выбери готовый предмет в каталоге.',MessageCircle],
             ['02','Согласуй детали','Выбираем материал, размер, цвет и готовим техническое задание. Специалист подтверждает стоимость.',Layers3],
