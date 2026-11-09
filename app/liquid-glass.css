@@ -90,3 +90,115 @@
 .teaser{padding-top:83px}
 }
 @media(prefers-reduced-motion:reduce){.forma-liquid,.forma-liquid__shine,.forma-metal__button,.product-image{transition:none!important}}
+
+
+/* FORMA 2.1: contrast-first headline and true glass chat vessel */
+.hero-copy h1 span{
+  background:linear-gradient(104deg,#4b5361 0%,#697585 47%,#464f5d 100%);
+  -webkit-background-clip:text;
+  background-clip:text;
+  -webkit-text-fill-color:transparent;
+  color:#4c5664;
+  text-shadow:none;
+  filter:drop-shadow(0 1px 0 rgba(255,255,255,.16));
+}
+/* Give the glass something gently shaded to refract, while keeping the
+   original neutral-white FORMA palette. */
+.home{position:relative;isolation:isolate}
+.home:before{
+  content:"";position:absolute;z-index:-1;pointer-events:none;
+  width:min(1000px,90vw);height:510px;
+  top:295px;left:50%;transform:translateX(-50%);
+  background:
+    radial-gradient(ellipse 26% 40% at 14% 56%,rgba(174,188,212,.27),transparent 100%),
+    radial-gradient(ellipse 32% 52% at 88% 42%,rgba(171,185,212,.28),transparent 100%),
+    radial-gradient(ellipse 57% 48% at 52% 56%,rgba(255,255,255,.85),transparent 95%);
+  filter:blur(20px);
+}
+.chat-window{
+  position:relative;
+  isolation:isolate;
+  border-radius:36px;
+  border:1px solid rgba(255,255,255,.94);
+  background:
+    linear-gradient(141deg,
+      rgba(255,255,255,.42) 0%,
+      rgba(249,251,254,.23) 28%,
+      rgba(221,230,242,.18) 60%,
+      rgba(255,255,255,.31) 100%);
+  box-shadow:
+    0 48px 105px rgba(57,74,104,.19),
+    0 13px 38px rgba(74,88,117,.12),
+    0 2px 7px rgba(92,110,139,.08),
+    inset 0 2px 0 rgba(255,255,255,.98),
+    inset 0 -1px 0 rgba(255,255,255,.30),
+    inset 2px 0 0 rgba(255,255,255,.67),
+    inset -2px 0 0 rgba(255,255,255,.28);
+  -webkit-backdrop-filter:blur(42px) saturate(1.65);
+  backdrop-filter:blur(42px) saturate(1.65);
+  overflow:hidden;
+}
+.chat-window:before{
+  content:"";position:absolute;inset:0;z-index:1;
+  pointer-events:none;border-radius:inherit;
+  background:
+    radial-gradient(ellipse 72% 17% at 48% 0%,
+      rgba(255,255,255,.89),rgba(255,255,255,.43) 35%,transparent 79%),
+    linear-gradient(115deg,
+      rgba(255,255,255,.25) 0%,
+      rgba(255,255,255,.11) 18%,
+      transparent 36%,transparent 70%,
+      rgba(255,255,255,.14) 91%);
+  opacity:.86;
+  animation:formaLensShimmer 9s ease-in-out infinite alternate;
+}
+.chat-window:after{
+  content:"";position:absolute;inset:1px;z-index:1;
+  pointer-events:none;border-radius:inherit;
+  border:1px solid rgba(255,255,255,.25);
+  box-shadow:
+    inset 0 2px 3px rgba(255,255,255,.70),
+    inset 0 -1px 2px rgba(157,175,201,.22),
+    inset 1px 0 1px rgba(255,255,255,.35);
+}
+@keyframes formaLensShimmer{
+  from{opacity:.72;filter:brightness(1)}
+  to{opacity:.95;filter:brightness(1.06)}
+}
+.chat-stream{position:relative;z-index:2;background:rgba(255,255,255,.035)}
+.chat-topbar{
+  position:relative;z-index:2;
+  background:linear-gradient(180deg,rgba(255,255,255,.31),rgba(255,255,255,.09));
+  border-bottom:1px solid rgba(255,255,255,.48);
+}
+.chat-composer-wrap{
+  position:relative;z-index:2;
+  background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.28));
+  border-top:1px solid rgba(255,255,255,.45);
+}
+.chat-composer{
+  border:1px solid rgba(255,255,255,.84);
+  background:linear-gradient(145deg,rgba(255,255,255,.67),rgba(241,246,253,.38));
+  box-shadow:
+    0 10px 28px rgba(77,96,127,.12),
+    inset 0 2px 2px rgba(255,255,255,.97);
+  -webkit-backdrop-filter:blur(18px) saturate(1.2);
+  backdrop-filter:blur(18px) saturate(1.2);
+}
+.chat-composer textarea{color:#26303d}
+.chat-composer textarea::placeholder{color:#737f90}
+.message-assistant .message-bubble{
+  background:linear-gradient(139deg,rgba(255,255,255,.67),rgba(234,240,249,.45));
+  border:1px solid rgba(255,255,255,.75);
+  -webkit-backdrop-filter:blur(10px);
+  backdrop-filter:blur(10px);
+}
+.ai-state{background:rgba(255,255,255,.47)}
+@media(max-width:650px){
+  .chat-window,.chat-window:before,.chat-window:after{border-radius:26px}
+  .home:before{top:220px;height:420px}
+  .chat-window{-webkit-backdrop-filter:blur(30px) saturate(1.35);backdrop-filter:blur(30px) saturate(1.35)}
+}
+@media(prefers-reduced-motion:reduce){
+  .chat-window:before{animation:none}
+}
