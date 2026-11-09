@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
+import './tailwind.css';
 import './globals.css';
+import './liquid-glass.css';
 
 export const metadata: Metadata = {
   title: 'FORMA — Воображай. Мы создадим.',

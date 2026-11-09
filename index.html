@@ -8,6 +8,7 @@
   <title>FORMA — Представь что угодно. Мы создадим.</title>
   <link rel="icon" type="image/svg+xml" href="./app/icon.svg">
   <link rel="stylesheet" href="./app/globals.css">
+  <link rel="stylesheet" href="./app/liquid-glass.css">
   <link rel="stylesheet" href="./pages-static.css">
   <script defer src="./pages-static.js"></script>
 </head>
@@ -23,7 +24,7 @@
     </button>
     <div class="header-right">
       <span class="header-label">3D DESIGN STUDIO <span class="header-star">✳</span> 2026</span>
-      <button id="menu-toggle" type="button" class="menu-button" aria-label="Открыть меню" aria-expanded="false">
+      <button id="menu-toggle" type="button" class="menu-button forma-liquid forma-liquid--lg" aria-label="Открыть меню" aria-expanded="false">
         <span class="menu-button-label">Меню</span><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
       </button>
     </div>
@@ -55,18 +56,18 @@
           </div>
           <form id="chat-form" class="chat-composer">
             <textarea id="chat-input" rows="1" maxlength="3000" placeholder="Опиши вещь, которую хочешь создать..." aria-label="Сообщение" required></textarea>
-            <button class="send-button" aria-label="Отправить" type="submit"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg></button>
+            <button class="send-button forma-liquid forma-liquid--icon forma-liquid--contrast" aria-label="Отправить" type="submit"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg></button>
           </form>
           <div class="chat-bottom">
             <span>◇ Не отправляй личные данные в чат</span>
-            <button id="order-open" type="button">▣ Оформить запрос <span aria-hidden="true">→</span></button>
+            <button id="order-open" type="button" class="chat-order-button forma-liquid forma-liquid--sm">▣ Оформить запрос <span aria-hidden="true">→</span></button>
           </div>
         </div>
       </section>
       <div class="hero-foot reveal">
         <div><span class="foot-symbol">↗</span><span>От идеи до реальной вещи</span></div>
         <div><span class="foot-symbol">✳</span><span>Дизайн под тебя</span></div>
-        <button type="button" data-view="catalog">Смотреть каталог <span aria-hidden="true">↗</span></button>
+        <button type="button" class="hero-catalog-btn forma-liquid forma-liquid--sm" data-view="catalog">Смотреть каталог <span aria-hidden="true">↗</span></button>
       </div>
       <section class="teaser">
         <div class="section-titlebar"><span class="overline">01 / ИЗ КАТАЛОГА</span><button type="button" data-view="catalog">Все товары ↗</button></div>

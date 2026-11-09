@@ -7,6 +7,7 @@ import {
   Package, Plus, Send, ShieldCheck, ShoppingBag, Sparkles, X
 } from 'lucide-react';
 import ProductArt from '@/components/ProductArt';
+import { LiquidButton } from '@/components/ui/liquid-glass-button';
 import { productById, products, rub, type Product } from '@/lib/catalog';
 
 type View = 'home' | 'catalog' | 'how' | 'about' | 'locations';
@@ -168,10 +169,10 @@ export default function Storefront() {
         </button>
         <div className="header-right">
           <span className="header-label">3D DESIGN STUDIO <span className="header-star">✳</span> 2026</span>
-          <button className={'menu-button' + (menu ? ' active' : '')} onClick={() => setMenu(!menu)} aria-label={menu ? 'Закрыть меню' : 'Открыть меню'} aria-expanded={menu}>
+          <LiquidButton size="lg" className={'menu-button' + (menu ? ' active' : '')} onClick={() => setMenu(!menu)} aria-label={menu ? 'Закрыть меню' : 'Открыть меню'} aria-expanded={menu}>
             <span className="menu-button-label">Меню</span>
             {menu ? <X size={20} strokeWidth={1.8}/> : <Menu size={20} strokeWidth={1.8}/>}
-          </button>
+          </LiquidButton>
         </div>
       </header>
 
@@ -241,18 +242,18 @@ export default function Storefront() {
               </div>}
               <div className="chat-composer">
                 <textarea ref={inputRef} rows={1} maxLength={3000} value={draft} onChange={e=>setDraft(e.target.value)} placeholder="Опиши вещь, которую хочешь создать..." aria-label="Сообщение для AI" onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }}}/>
-                <button className="send-button" disabled={busy || !draft.trim()} onClick={() => sendMessage()} aria-label="Отправить сообщение"><ArrowUpRight size={21} strokeWidth={1.85}/></button>
+                <LiquidButton size="icon" variant="contrast" className="send-button" disabled={busy || !draft.trim()} onClick={() => sendMessage()} aria-label="Отправить сообщение"><ArrowUpRight size={21} strokeWidth={1.85}/></LiquidButton>
               </div>
               <div className="chat-bottom">
                 <span><ShieldCheck size={13}/> Не отправляй личные данные в чат</span>
-                <button onClick={() => openOrder()}><ShoppingBag size={14}/> Оформить запрос <ArrowRight size={13}/></button>
+                <LiquidButton size="sm" className="chat-order-button" onClick={() => openOrder()}><ShoppingBag size={14}/> Оформить запрос <ArrowRight size={13}/></LiquidButton>
               </div>
             </div>}
           </section>
           <div className="hero-foot reveal">
             <div><span className="foot-symbol">↗</span><span>От идеи до реальной вещи</span></div>
             <div><span className="foot-symbol">✳</span><span>Дизайн под тебя</span></div>
-            <button onClick={() => changeView('catalog')}>Смотреть каталог <ArrowUpRight size={18}/></button>
+            <LiquidButton size="sm" className="hero-catalog-btn" onClick={() => changeView('catalog')}>Смотреть каталог <ArrowUpRight size={18}/></LiquidButton>
           </div>
           <section className="teaser">
             <div className="section-titlebar"><span className="overline">01 / ИЗ КАТАЛОГА</span><button onClick={() => changeView('catalog')}>Все товары <ArrowUpRight size={16}/></button></div>
