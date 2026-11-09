@@ -48,7 +48,7 @@
     $('featured-grid').innerHTML = products.slice(0,3).map(productCard).join('');
     $('category-filters').innerHTML = categories.map(c => '<button type="button" data-filter="'+c+'" class="'+(c===filter?'selected':'')+'" aria-pressed="'+(c===filter)+'">'+c+'</button>').join('');
     $('catalog-grid').innerHTML = products.filter(p => filter==='Все' || p.category===filter).map(productCard).join('');
-    $('demo-product').innerHTML = products.filter(p=>p.ready).map(p=>'<option value="'+p.id+'">'+p.name+' — от '+money(p.price)+'</option>').join('');
+    $('demo-product').innerHTML = '<option value="new-project">Новая вещь по моей идее</option>' + products.filter(p=>p.ready).map(p=>'<option value="'+p.id+'">'+p.name+' — печать от '+money(p.price)+'</option>').join('');
   }
 
   function closeOverlays() {
@@ -105,15 +105,27 @@
     $('product-close').focus();
   }
 
+  const designFees={standard:0,adaptation:490,custom:1490,complex:4990};
   function updateOrderPrice(){
-    const p=products.find(p=>p.id===$('demo-product').value)||products[0];
-    text('demo-price',money(p.price));
+    const id=$('demo-product').value;
+    const original=id==='new-project'||id==='studio-prototype';
+    const selector=$('demo-design-tier');
+    for(const option of selector.options) option.disabled=original&&(option.value==='standard'||option.value==='adaptation');
+    if(original&&(selector.value==='standard'||selector.value==='adaptation'))selector.value='custom';
+    const p=products.find(p=>p.id===id);
+    const printing=original?null:(p?p.price:null);
+    const design=designFees[selector.value]??1490;
+    text('demo-design-fee',design===0?'Бесплатно':'от '+money(design));
+    text('demo-print-fee',printing===null?'По расчёту':'от '+money(printing));
+    text('demo-price',printing===null?'После оценки':'от '+money(printing+design));
   }
 
-  function openOrder(){
+  function openOrder(productId){
     closeOverlays();
     $('order-overlay').hidden=false;
-    $('demo-product').value=selected.ready?selected.id:products[0].id;
+    const id=typeof productId==='string'?productId:(selected.ready?selected.id:products[0].id);
+    $('demo-product').value=id;
+    $('demo-design-tier').value=id==='new-project'||id==='studio-prototype'?'custom':'standard';
     updateOrderPrice();
     document.body.classList.add('overlay-active');
     $('order-close').focus();
@@ -138,6 +150,7 @@
 
   function demoAnswer(input){
     const m=input.toLocaleLowerCase('ru');
+    if (/разработ|моделир|за дизайн|с нуля|платн|за проект|модел[ьи]/.test(m)) return 'Обсуждение идеи бесплатно. Имя или цвет в готовом шаблоне тоже бесплатно. Правки шаблона — 490–990 ₽, новая модель — 1 490–3 990 ₽, сложные проекты — от 4 990 ₽. Изготовление отдельно; финальную цену подтвердит специалист.';
     if (/адрес|номер телефона|паспорт|достав|оплат|оформ|заказ/.test(m)) return 'Можно обсудить изделие и предварительную стоимость. Но приём заявок и адресов пока отключён — сайт работает на GitHub Pages без серверного хранилища. Нажми «Оформить запрос», чтобы посмотреть будущий процесс.';
     if (/ортоп|стельк|плоскостоп|лечени|боль/.test(m)) return 'Для ортопедических изделий нужна консультация специалиста и отдельная проверка требований к производству. Сейчас мы не принимаем медицинские заказы. Хочешь обсудить немедицинскую дизайнерскую обувь?';
     if (/кроссов|ботин|обув|тапоч/.test(m)) return 'У нас есть концепт FORM / ONE — футуристичная 3D-обувь с параметрической структурой. Он пока не доступен к заказу: проверяем конструкцию. Интереснее дизайн подошвы или верх обуви?';
@@ -145,7 +158,7 @@
     if (/час|ремеш|apple watch/.test(m)) return 'Loop Band — дизайнерский ремешок с лёгкой сетчатой геометрией, ориентировочно от 1 790 ₽. Для него сначала надо знать модель часов и тип крепления. Какая у тебя модель?';
     if (/круж|стакан|бутыл/.test(m)) return 'Можно создать Mono Sleeve — внешнюю персонализированную накладку для стакана или бутылки, от 1 190 ₽. Печатать пищевую ёмкость из обычного 3D-пластика не предлагаем. Какой объём и форма стакана?';
     if (/дом|ламп|светиль|стол|органайзер|подставк/.test(m)) return 'В коллекции есть Orbit Dock — скульптурная подставка от 1 690 ₽, и Halo Object — декоративный световой корпус от 2 490 ₽. Хочешь минимализм или более смелую форму?';
-    if (/цена|стоим|сколько|рубл/.test(m)) return 'Цены в каталоге указаны «от». Финальная цена зависит от размеров, материала и времени печати; её подтвердит специалист, когда будет готова модель. Что именно хочешь изготовить?';
+    if (/цена|стоим|сколько|рубл/.test(m)) return 'Обсуждение бесплатно, правки шаблона от 490 ₽, индивидуальная разработка от 1 490 ₽. Печать — отдельная услуга по расчёту после проверки модели. Что хочешь создать?';
     if (/брелок|логотип|названи|бизнес|корпоратив/.test(m)) return 'Для персональных знаков есть Signature Tag от 490 ₽, а для нестандартных деталей — Studio Prototype. Можно добавить логотип, форму и размер. Сколько изделий нужно?';
     if (/привет|здравств|хай|добрый/.test(m)) return 'Привет! Придумаем что-нибудь необычное? Можем начать с чехла, ремешка, предмета для дома или совершенно новой идеи.';
     return 'Интересная идея! Расскажи, для чего нужна вещь, её примерный размер и желаемый материал — мягкий гибкий или жёсткий пластик. Я помогу подобрать похожий объект из каталога. Пока это демонстрационный помощник, а не подключённая модель Yandex AI.';
@@ -167,6 +180,8 @@
     if (!(target instanceof Element)) return;
     const v=target.closest('[data-view]');
     if(v){ e.preventDefault(); setView(v.getAttribute('data-view')); return; }
+    const custom=target.closest('[data-action="custom"]');
+    if(custom){openOrder('new-project');return;}
     const p=target.closest('[data-product]');
     if(p){openProduct(p.getAttribute('data-product'));return;}
     const f=target.closest('[data-filter]');
@@ -181,8 +196,9 @@
   $('product-close').addEventListener('click',closeOverlays);
   $('order-close').addEventListener('click',closeOverlays);
   $('order-back').addEventListener('click',()=>{closeOverlays();setView('home');});
-  $('order-open').addEventListener('click',openOrder);
+  $('order-open').addEventListener('click',()=>openOrder());
   $('demo-product').addEventListener('change',updateOrderPrice);
+  $('demo-design-tier').addEventListener('change',updateOrderPrice);
   $('product-order').addEventListener('click',()=>{
     if(selected.ready) openOrder();
     else {closeOverlays();setView('home');send('Расскажи про концепт обуви FORM / ONE.');}

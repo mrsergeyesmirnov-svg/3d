@@ -69,6 +69,20 @@
         <div><span class="foot-symbol">✳</span><span>Дизайн под тебя</span></div>
         <button type="button" class="hero-catalog-btn forma-liquid forma-liquid--sm" data-view="catalog">Смотреть каталог <span aria-hidden="true">↗</span></button>
       </div>
+      <section class="design-pricing-section" aria-label="Стоимость разработки 3D-модели">
+<div class="section-titlebar"><span class="overline">02 / FORMA CREATE</span><span class="pricing-kicker">РАЗРАБОТКА И ПЕЧАТЬ — ОТДЕЛЬНО</span></div>
+<div class="design-pricing-heading">
+<div><h2>Идея — бесплатно.<br><em>Модель — по делу.</em></h2><p>Обсуди идею с FORMA AI. Разработка модели оплачивается после согласования задания и стоимости.</p></div>
+<button type="button" class="forma-liquid forma-liquid--lg" data-action="custom">Создать свою вещь ↗</button>
+</div>
+<div class="design-pricing-grid">
+<article class="design-tier"><span class="design-tier-number">01 / ДИЗАЙН</span><h3>Готовая модель</h3><p>Имя, цвет или дата в пределах шаблона.</p><strong>Бесплатно</strong></article>
+<article class="design-tier"><span class="design-tier-number">02 / ДИЗАЙН</span><h3>Изменить шаблон</h3><p>Новые размеры, форма или пропорции.</p><strong>490–990 ₽</strong></article>
+<article class="design-tier design-tier--featured"><span class="design-tier-number">03 / ДИЗАЙН</span><h3>Моя идея с нуля</h3><p>Разработка индивидуальной 3D-модели.</p><strong>1 490–3 990 ₽</strong></article>
+<article class="design-tier"><span class="design-tier-number">04 / ДИЗАЙН</span><h3>Сложный проект</h3><p>Техническая деталь или новая конструкция.</p><strong>от 4 990 ₽</strong></article>
+</div>
+<p class="design-pricing-note">Изготовление и доставка рассчитываются отдельно. Базовая разработка включает одну согласованную итерацию правок. Передача STL-файлов и коммерческих прав — по отдельному соглашению. Финальную стоимость подтверждает специалист.</p>
+</section>
       <section class="teaser">
         <div class="section-titlebar"><span class="overline">01 / ИЗ КАТАЛОГА</span><button type="button" data-view="catalog">Все товары ↗</button></div>
         <h2>Начни с формы.<br><em>Продолжи фантазией.</em></h2>
@@ -89,7 +103,8 @@
     <section class="editorial-page page-panel" id="how-panel" hidden>
       <span class="page-eyebrow">ПРОЦЕСС / 03 ШАГА</span>
       <h1>От мысли<br>до предмета<span class="editorial-dot">.</span></h1>
-      <p class="editorial-intro">Никаких сложных редакторов. Просто диалог, понятный проект и реальное производство.</p>
+      <p class="editorial-intro">Никаких сложных редакторов. Диалог и идея бесплатно, разработка новой 3D-модели — отдельно от изготовления.</p>
+      <div class="how-design-fees"><strong>Индивидуальный дизайн от 1 490 ₽</strong><span>Изменение шаблона от 490 ₽ · сложные проекты от 4 990 ₽ · печать отдельно</span><button type="button" data-action="custom">Обсудить проект ↗</button></div>
       <div class="steps">
         <div class="step"><span>01</span><div><h3>Расскажи идею</h3><p>Объясни, что хочешь создать, или выбери готовый предмет в каталоге.</p></div><b>✳</b></div>
         <div class="step"><span>02</span><div><h3>Согласуй детали</h3><p>Выбираем материал, размер и цвет. Специалист подтверждает итоговую стоимость.</p></div><b>◇</b></div>
@@ -159,8 +174,20 @@
       <p>Мы подготовили интерфейс согласования заказа. Временно заявки не принимаются: GitHub Pages не поддерживает защищённое хранение адресов и телефонов.</p>
       <label for="demo-product">Выбранное изделие</label>
       <select id="demo-product"></select>
-      <div class="order-price"><span>Ориентировочно от</span><strong id="demo-price">—</strong></div>
-      <div class="demo-notice">Для реального оформления подключим сервер Yandex AI, российскую базу данных и безопасную оплату. Не указывай контакты в чате.</div>
+      <label for="demo-design-tier">Уровень разработки</label>
+      <select id="demo-design-tier">
+      <option value="standard">Готовая модель — бесплатно</option>
+      <option value="adaptation">Изменение шаблона — 490–990 ₽</option>
+      <option value="custom">Индивидуальная модель — 1 490–3 990 ₽</option>
+      <option value="complex">Сложный проект — от 4 990 ₽</option>
+      </select>
+      <div class="order-breakdown demo-breakdown">
+      <div><span>Разработка 3D-модели</span><strong id="demo-design-fee">0 ₽</strong></div>
+      <div><span>Изготовление</span><strong id="demo-print-fee">—</strong></div>
+      <div class="order-total"><span>Ориентир</span><strong id="demo-price">—</strong></div>
+      <p>Разработка оплачивается только после согласования ТЗ. Печать рассчитывается отдельно после проверки модели. Пока это демонстрация, оплата недоступна.</p>
+      </div>
+      <div class="demo-notice">Для реальных заказов подключим Yandex AI, российскую базу и оплату. Сейчас не отправляй контакты, адреса или другие личные данные в чат.</div>
       <button type="button" class="dark-action" id="order-back">Вернуться к чату ↗</button>
     </article>
   </div>

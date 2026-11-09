@@ -36,3 +36,6 @@ body.overlay-active { overflow:hidden; }
   .menu-drawer .drawer-caption { gap:8px; }
   .menu-drawer .drawer-caption>span { margin-right:4px; }
 }
+
+.demo-order .demo-breakdown{margin:20px 0 18px}
+.demo-order select+label{margin-top:17px}
